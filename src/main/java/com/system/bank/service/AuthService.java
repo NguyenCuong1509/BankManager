@@ -21,13 +21,16 @@ public class AuthService {
     private final UserRepository userRepository;
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
+    private final com.system.bank.securityConfig.JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
                        CustomerRepository customerRepository,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       com.system.bank.securityConfig.JwtService jwtService) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     @Transactional(readOnly = true)
@@ -42,6 +45,7 @@ public class AuthService {
         }
         Long customerId = (entity.getCustomer()!=null)?entity.getCustomer().getCustomerId():null;
         String fullName = (entity.getCustomer()!=null)?entity.getCustomer().getFullName(): entity.getUsername();
+        String token = jwtService.generateToken(entity);
 
         return LoginResponseDTO.builder()
                 .userId(entity.getUserId())
@@ -50,6 +54,8 @@ public class AuthService {
                 .customerId(customerId)
                 .fullName(fullName)
                 .authenticated(true)
+                .token(token)
+                .tokenType("Bearer")
                 .message("Đăng nhập thành công.")
                 .build();
     }
@@ -74,6 +80,7 @@ public class AuthService {
                 .customer(savedCustomer)
                 .build();
         UserEntity savedUser = userRepository.save(user);
+        String token = jwtService.generateToken(savedUser);
 
         return LoginResponseDTO.builder()
                 .userId(savedUser.getUserId())
@@ -82,6 +89,8 @@ public class AuthService {
                 .customerId(savedCustomer.getCustomerId())
                 .fullName(savedCustomer.getFullName())
                 .authenticated(true)
+                .token(token)
+                .tokenType("Bearer")
                 .message("Đăng ký tài khoản thành công.")
                 .build();
     }

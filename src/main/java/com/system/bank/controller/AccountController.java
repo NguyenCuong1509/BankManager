@@ -29,6 +29,7 @@ public class AccountController {
     }
 
     @PatchMapping("/{accountId}/status")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiReponse<AccountReponseDTO>> updateAccountStatus(@PathVariable Long accountId,
                                                                              @RequestParam AccountCustomerStatus status) {
         AccountReponseDTO account = customerService.updateAccountStatus(accountId, status);

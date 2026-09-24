@@ -17,6 +17,8 @@ public class LoginResponseDTO {
     private Long customerId;
     private String fullName;
     private boolean authenticated;
+    private String token;
+    private String tokenType;
     private String message;
 }
 

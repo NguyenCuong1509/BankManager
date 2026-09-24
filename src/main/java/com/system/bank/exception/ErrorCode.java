@@ -18,6 +18,7 @@ public enum ErrorCode {
     DAILY_LIMIT_EXCEEDED(1010, "Giao dịch vượt quá hạn mức tối đa trong ngày.", HttpStatus.BAD_REQUEST),
     SAME_ACCOUNT_TRANSFER(1011, "Tài khoản nhận không được trùng với tài khoản chuyển.", HttpStatus.BAD_REQUEST),
     TRANSACTION_NOT_FOUND(1012, "Không tìm thấy thông tin giao dịch.", HttpStatus.NOT_FOUND),
+    ACCESS_DENIED(1013, "Bạn không có quyền thực hiện thao tác này.", HttpStatus.FORBIDDEN),
     ;
 
     private final int code;

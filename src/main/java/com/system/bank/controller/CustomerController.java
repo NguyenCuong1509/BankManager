@@ -23,6 +23,7 @@ public class CustomerController {
     }
 
     @GetMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiReponse<List<CustomerReponseDTO>>> getAllCustomer() {
         List<CustomerReponseDTO> customers = customerService.getAll();
         return ResponseEntity.ok(ApiReponse.<List<CustomerReponseDTO>>builder()
@@ -43,6 +44,7 @@ public class CustomerController {
     }
 
     @PostMapping
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiReponse<CustomerReponseDTO>> createCustomer(@RequestBody @Valid CustomerRequestDTO requestDTO) {
         CustomerReponseDTO created = customerService.create(requestDTO);
         return ResponseEntity.ok(ApiReponse.<CustomerReponseDTO>builder()
@@ -64,6 +66,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/{customerId}")
+    @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiReponse<String>> lockCustomer(@PathVariable Long customerId) {
         customerService.lock(customerId);
         return ResponseEntity.ok(ApiReponse.<String>builder()
