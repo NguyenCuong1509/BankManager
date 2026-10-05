@@ -7,7 +7,10 @@ import com.system.bank.dto.CustomerReponseDTO;
 import com.system.bank.dto.CustomerRequestDTO;
 import com.system.bank.entity.AccountEntity;
 import com.system.bank.entity.CustomerEntity;
+import com.system.bank.entity.PaymentAccountEntity;
+import com.system.bank.entity.SavingAccountEntity;
 import com.system.bank.enums.AccountCustomerStatus;
+import com.system.bank.enums.AccountType;
 import com.system.bank.exception.AppException;
 import com.system.bank.exception.ErrorCode;
 import com.system.bank.mapper.AccountMapper;
@@ -92,7 +95,27 @@ public class CustomerService {
 
     public AccountReponseDTO createAccount(AccountRequestDTO request){
         CustomerEntity customer = customerRepository.findById(request.getCustomerId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        AccountEntity entity = accountMapper.toEntity(request,customer);
+        AccountEntity entity ;
+        if (request.getAccountType() == AccountType.SAVING){
+            SavingAccountEntity saving = new SavingAccountEntity();
+
+            saving.setAccountType(AccountType.SAVING);
+            saving.setInterestRate(request.getInterestRate());
+            saving.setTermMonths(request.getTermMonths());
+            saving.setMaturityDate(request.getMaturityDate());
+            entity = saving;
+        } else if (request.getAccountType() == AccountType.PAYMENT) {
+            PaymentAccountEntity payment = new PaymentAccountEntity();
+            payment.setAccountType(AccountType.PAYMENT);
+            payment.setDailyTransferred(request.getDailyTransferred());
+            payment.setTransferCountToday(request.getTransferCountToday());
+            entity = payment;
+        }else {
+            throw new AppException(ErrorCode.ACCOUNT_TYPE_INVALID);
+        }
+        entity.setAccountNumber(entity.getAccountNumber());
+        entity.setDailyLimit(entity.getDailyLimit());
+        entity.setCustomer(customer);
         AccountEntity saved = accountRepository.save(entity);
         return accountMapper.toResponseDto(saved);
     }

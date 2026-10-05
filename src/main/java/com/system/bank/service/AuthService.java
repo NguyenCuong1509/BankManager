@@ -6,10 +6,8 @@ import com.system.bank.dto.RegisterRequestDTO;
 import com.system.bank.entity.CustomerEntity;
 import com.system.bank.entity.UserEntity;
 import com.system.bank.enums.AccountCustomerStatus;
-import com.system.bank.enums.Role;
 import com.system.bank.exception.AppException;
 import com.system.bank.exception.ErrorCode;
-import com.system.bank.repository.AccountRepository;
 import com.system.bank.repository.CustomerRepository;
 import com.system.bank.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +44,6 @@ public class AuthService {
         return LoginResponseDTO.builder()
                 .userId(entity.getUserId())
                 .username(entity.getUsername())
-                .role(entity.getRole())
                 .customerId(customerId)
                 .fullName(fullName)
                 .authenticated(true)
@@ -70,7 +67,6 @@ public class AuthService {
         UserEntity user = UserEntity.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(Role.CUSTOMER)
                 .customer(savedCustomer)
                 .build();
         UserEntity savedUser = userRepository.save(user);
@@ -78,7 +74,6 @@ public class AuthService {
         return LoginResponseDTO.builder()
                 .userId(savedUser.getUserId())
                 .username(savedUser.getUsername())
-                .role(savedUser.getRole())
                 .customerId(savedCustomer.getCustomerId())
                 .fullName(savedCustomer.getFullName())
                 .authenticated(true)

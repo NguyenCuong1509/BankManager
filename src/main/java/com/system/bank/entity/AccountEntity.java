@@ -21,7 +21,8 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AccountEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_req")
+    @SequenceGenerator(name = "account_req", sequenceName = "ACCOUNT_SEQ", allocationSize = 1)
     @Column(name = "AccountId")
     Long accountId;
 
@@ -29,11 +30,11 @@ public class AccountEntity {
     String accountNumber;
 
     @Column(name = "Balance")
-    BigDecimal balance;
+    BigDecimal balance = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "AccountStatus")
-    AccountCustomerStatus accountStatus;
+    AccountCustomerStatus accountStatus = AccountCustomerStatus.ACTIVE;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "AccountType")

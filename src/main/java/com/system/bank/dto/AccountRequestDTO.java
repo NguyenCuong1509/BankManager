@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data 
@@ -20,4 +21,9 @@ public class AccountRequestDTO {
     private AccountType accountType;
     private BigDecimal dailyLimit;
     private Long customerId;
+    private BigDecimal dailyTransferred;
+    private int transferCountToday;
+    private BigDecimal interestRate;
+    private int termMonths;
+    private LocalDate maturityDate;
 }
