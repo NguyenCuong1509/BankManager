@@ -19,7 +19,8 @@ public enum ErrorCode {
     SAME_ACCOUNT_TRANSFER(1011, "Tài khoản nhận không được trùng với tài khoản chuyển.", HttpStatus.BAD_REQUEST),
     TRANSACTION_NOT_FOUND(1012, "Không tìm thấy thông tin giao dịch.", HttpStatus.NOT_FOUND),
 
-    ACCOUNT_TYPE_INVALID(2000,"Loại tài khoản không hợp lệ", HttpStatus.BAD_REQUEST)
+    ACCOUNT_TYPE_INVALID(2000,"Loại tài khoản không hợp lệ", HttpStatus.BAD_REQUEST),
+    ROLE_NOT_FOUND(3000,"Không thấy quyền này", HttpStatus.BAD_REQUEST)
     ;
 
     private final int code;
