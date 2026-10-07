@@ -8,6 +8,7 @@ import com.system.bank.exception.ErrorCode;
 import com.system.bank.mapper.RoleMapper;
 import com.system.bank.repository.RoleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,14 +23,14 @@ public class RoleService {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
     }
-
+    @Transactional
     public RoleResponse addRole(RoleRequest request){
         RoleEntity entity = new RoleEntity();
         entity.setNameRole(request.getRoleName());
         RoleEntity saved = roleRepository.save(entity);
         return roleMapper.toResponse(saved);
     }
-
+    @Transactional(readOnly = true)
     public List<RoleResponse> getAll(){
         List<RoleEntity> role = roleRepository.findAll();
         if (role.isEmpty()){
@@ -43,12 +44,12 @@ public class RoleService {
     public boolean existByName(String name){
         return roleRepository.existsByNameRole(name);
     }
-
+    @Transactional(readOnly = true)
     public RoleResponse findByNameRole(String nameRole){
         RoleEntity entity = roleRepository.findByNameRole(nameRole).orElseThrow(()-> new AppException(ErrorCode.ROLE_NOT_FOUND));
         return roleMapper.toResponse(entity);
     }
-
+    @Transactional
     public RoleResponse update(Long roleId, RoleRequest request){
         if (request==null) return null;
         RoleEntity role = roleRepository.findById(roleId).orElseThrow(()->new AppException(ErrorCode.ROLE_NOT_FOUND));

@@ -37,7 +37,6 @@ public class CustomerService {
         this.customerMapper = customerMapper;
         this.accountMapper = accountMapper;
     }
-
     public List<CustomerReponseDTO> findAllCustomer(){
         return customerRepository.findAll().stream()
                 .map(customerMapper::toResponseDto)
@@ -50,6 +49,7 @@ public class CustomerService {
         return customerMapper.toResponseDto(customer);
     }
 
+    @Transactional
     public CustomerReponseDTO update(Long Id,CustomerRequestDTO update)
     {
         CustomerEntity customerUpdate = customerRepository.findById(Id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
@@ -58,6 +58,7 @@ public class CustomerService {
         return customerMapper.toResponseDto(saved);
     }
 
+    @Transactional
     public CustomerReponseDTO create(CustomerRequestDTO request){
         CustomerEntity entity = customerMapper.toEntity(request);
         CustomerEntity saved = customerRepository.save(entity);
@@ -65,6 +66,7 @@ public class CustomerService {
         return dto;
     }
 
+    @Transactional(readOnly = true)
     public List<CustomerReponseDTO> getAll(){
         return customerRepository.findAll().stream()
                 .map(customerMapper::toResponseDto)
@@ -83,6 +85,7 @@ public class CustomerService {
     }
 
     // tài khoản
+    @Transactional(readOnly = true)
     public List<AccountReponseDTO> getAllAccount(Long customerId) {
         if (!customerRepository.existsById(customerId)){
             throw new AppException(ErrorCode.ACCOUNT_NOT_FOUND);
@@ -92,7 +95,7 @@ public class CustomerService {
                 .map(accountMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
-
+    @Transactional
     public AccountReponseDTO createAccount(AccountRequestDTO request){
         CustomerEntity customer = customerRepository.findById(request.getCustomerId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         AccountEntity entity ;
@@ -119,13 +122,13 @@ public class CustomerService {
         AccountEntity saved = accountRepository.save(entity);
         return accountMapper.toResponseDto(saved);
     }
-
+    @Transactional(readOnly = true)
     public AccountReponseDTO findByAccountId(Long id){
         AccountEntity account = accountRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
         return accountMapper.toResponseDto(account);
     }
-
+    @Transactional(readOnly = true)
     public AccountReponseDTO updateAccountStatus(Long accountId, AccountCustomerStatus status) {
         AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
@@ -135,5 +138,3 @@ public class CustomerService {
         return accountMapper.toResponseDto(updated);
     }
 }
-
-
