@@ -28,7 +28,7 @@ public class AccountController {
                 .build());
     }
 
-    @PatchMapping("/{accountId}/status")
+    @PostMapping("/{accountId}/status")
     public ResponseEntity<ApiReponse<AccountReponseDTO>> updateAccountStatus(@PathVariable Long accountId,
                                                                              @RequestParam AccountCustomerStatus status) {
         AccountReponseDTO account = customerService.updateAccountStatus(accountId, status);

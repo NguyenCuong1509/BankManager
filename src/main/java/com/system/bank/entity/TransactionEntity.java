@@ -3,10 +3,7 @@ package com.system.bank.entity;
 import com.system.bank.enums.TransactionStatus;
 import com.system.bank.enums.TransactionType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
@@ -14,7 +11,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -51,7 +49,7 @@ public class TransactionEntity {
     @Column(name = "FailureReason")
     String failureReason;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "AccountId")
     AccountEntity account;
 }

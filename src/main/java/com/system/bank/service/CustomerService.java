@@ -17,6 +17,8 @@ import com.system.bank.mapper.AccountMapper;
 import com.system.bank.mapper.CustomerMapper;
 import com.system.bank.repository.AccountRepository;
 import com.system.bank.repository.CustomerRepository;
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +39,7 @@ public class CustomerService {
         this.customerMapper = customerMapper;
         this.accountMapper = accountMapper;
     }
+    @Transactional(readOnly = true)
     public List<CustomerReponseDTO> findAllCustomer(){
         return customerRepository.findAll().stream()
                 .map(customerMapper::toResponseDto)
@@ -69,10 +72,11 @@ public class CustomerService {
     @Transactional(readOnly = true)
     public List<CustomerReponseDTO> getAll(){
         return customerRepository.findAll().stream()
-                .map(customerMapper::toResponseDto)
-                .collect(Collectors.toList());
+        .map(customerMapper::toResponseDto)
+        .collect(Collectors.toList());
     }
-
+    
+    @Transactional(readOnly = true)
     public CustomerReponseDTO findCustomer(Long id){
         CustomerEntity entity = customerRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         return customerMapper.toResponseDto(entity);
@@ -95,6 +99,7 @@ public class CustomerService {
                 .map(accountMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Transactional
     public AccountReponseDTO createAccount(AccountRequestDTO request){
         CustomerEntity customer = customerRepository.findById(request.getCustomerId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
@@ -116,8 +121,8 @@ public class CustomerService {
         }else {
             throw new AppException(ErrorCode.ACCOUNT_TYPE_INVALID);
         }
-        entity.setAccountNumber(entity.getAccountNumber());
-        entity.setDailyLimit(entity.getDailyLimit());
+        entity.setAccountNumber(request.getAccountNumber());
+        entity.setDailyLimit(request.getDailyLimit());
         entity.setCustomer(customer);
         AccountEntity saved = accountRepository.save(entity);
         return accountMapper.toResponseDto(saved);
@@ -128,7 +133,7 @@ public class CustomerService {
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
         return accountMapper.toResponseDto(account);
     }
-    @Transactional(readOnly = true)
+    @Transactional
     public AccountReponseDTO updateAccountStatus(Long accountId, AccountCustomerStatus status) {
         AccountEntity account = accountRepository.findById(accountId)
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));

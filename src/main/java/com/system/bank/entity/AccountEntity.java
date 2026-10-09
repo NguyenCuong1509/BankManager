@@ -3,10 +3,7 @@ package com.system.bank.entity;
 import com.system.bank.enums.AccountCustomerStatus;
 import com.system.bank.enums.AccountType;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
@@ -15,7 +12,8 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "account")
 @Inheritance(strategy = InheritanceType.JOINED)
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -46,7 +44,7 @@ public class AccountEntity {
     @Column(name = "DailyLimit")
     BigDecimal dailyLimit;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerId")
     CustomerEntity customer;
 }

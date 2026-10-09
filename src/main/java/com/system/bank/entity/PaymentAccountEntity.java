@@ -10,7 +10,8 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "payment_account")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)

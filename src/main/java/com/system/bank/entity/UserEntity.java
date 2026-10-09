@@ -7,7 +7,8 @@ import lombok.experimental.FieldDefaults;
 
 @Entity
 @Table(name = "users")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -31,7 +32,7 @@ public class UserEntity {
     @ManyToOne
     RoleEntity role;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "CustomerId")
     CustomerEntity customer;
 }

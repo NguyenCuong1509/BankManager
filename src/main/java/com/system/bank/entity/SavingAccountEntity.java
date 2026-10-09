@@ -11,7 +11,8 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "saving_account")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
