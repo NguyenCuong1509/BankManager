@@ -33,7 +33,8 @@ public class TranferService {
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
 
-    public TranferService(AccountRepository accountRepository, TransactionRepository transactionRepository, TransactionMapper transactionMapper) {
+    public TranferService(AccountRepository accountRepository, TransactionRepository transactionRepository,
+            TransactionMapper transactionMapper) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
@@ -127,7 +128,7 @@ public class TranferService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public TransactionResponseDTO withdraw(WithdrawRequestDTO request){
+    public TransactionResponseDTO withdraw(WithdrawRequestDTO request) {
         if (request.getAmount() == null || request.getAmount().compareTo(BigDecimal.ZERO) <= 0) {
             throw new AppException(ErrorCode.INVALID_AMOUNT);
         }
@@ -164,21 +165,21 @@ public class TranferService {
         return transactionMapper.toResponseDto(savedTxn);
     }
 
-   @Transactional(readOnly = true)
-    public List<TransactionResponseDTO> getTransactionHistory(String accountNumber){
-        if (!accountRepository.existsByAccountNumber(accountNumber)){
+    @Transactional(readOnly = true)
+    public List<TransactionResponseDTO> getTransactionHistory(String accountNumber) {
+        if (!accountRepository.existsByAccountNumber(accountNumber)) {
             throw new AppException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
         return transactionRepository.findHistoryByAccountNumber(accountNumber).stream()
                 .map(transactionMapper::toResponseDto)
                 .collect(Collectors.toList());
-   }
+    }
 
-   @Transactional(readOnly = true)
-    public TransactionResponseDTO getbyRefNo(String refNo){
+    @Transactional(readOnly = true)
+    public TransactionResponseDTO getbyRefNo(String refNo) {
         TransactionEntity entity = transactionRepository.findByRefNo(refNo)
-                .orElseThrow(()->new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
+                .orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
         return transactionMapper.toResponseDto(entity);
 
-   }
+    }
 }

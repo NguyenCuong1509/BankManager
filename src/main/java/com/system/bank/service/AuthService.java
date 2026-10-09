@@ -73,7 +73,7 @@ public class AuthService {
                 .build();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public LoginResponseDTO register(RegisterRequestDTO request) {
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);

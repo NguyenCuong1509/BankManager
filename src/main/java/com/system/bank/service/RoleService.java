@@ -23,7 +23,7 @@ public class RoleService {
         this.roleRepository = roleRepository;
         this.roleMapper = roleMapper;
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RoleResponse addRole(RoleRequest request){
         RoleEntity entity = new RoleEntity();
         entity.setNameRole(request.getRoleName());
@@ -49,7 +49,7 @@ public class RoleService {
         RoleEntity entity = roleRepository.findByNameRole(nameRole).orElseThrow(()-> new AppException(ErrorCode.ROLE_NOT_FOUND));
         return roleMapper.toResponse(entity);
     }
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public RoleResponse update(Long roleId, RoleRequest request){
         if (request==null) return null;
         RoleEntity role = roleRepository.findById(roleId).orElseThrow(()->new AppException(ErrorCode.ROLE_NOT_FOUND));
