@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "account")
+@Table(name = "ACCOUNT")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
@@ -21,30 +21,29 @@ public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "account_req")
     @SequenceGenerator(name = "account_req", sequenceName = "ACCOUNT_SEQ", allocationSize = 1)
-    @Column(name = "AccountId")
+    @Column(name = "ACCOUNT_ID")
     Long accountId;
 
-    @Column(name = "AccountNumber")
+    @Column(name = "ACCOUNT_NUMBER")
     String accountNumber;
 
-    @Column(name = "Balance")
+    @Column(name = "BALANCE")
     BigDecimal balance = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "AccountStatus")
+    @Column(name = "ACCOUNT_STATUS")
     AccountCustomerStatus accountStatus = AccountCustomerStatus.ACTIVE;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "AccountType")
+    @Column(name = "ACCOUNT_TYPE")
     AccountType accountType;
 
-    @Column(name = "CreateAt")
+    @Column(name = "CREATE_AT")
     LocalDateTime createAt = LocalDateTime.now();
 
-    @Column(name = "DailyLimit")
+    @Column(name = "DAILY_LIMIT")
     BigDecimal dailyLimit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "CustomerId")
-    CustomerEntity customer;
+    @Column(name = "CUSTOMER_ID")
+    Long customerId;
 }

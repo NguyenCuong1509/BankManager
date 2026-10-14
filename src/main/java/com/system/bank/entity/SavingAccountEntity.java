@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "saving_account")
+@Table(name = "SAVING_ACCOUNT")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,12 +18,12 @@ import java.time.LocalDate;
 @EqualsAndHashCode(callSuper = true)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SavingAccountEntity extends AccountEntity {
-    @Column(name = "InterestRate")
+    @Column(name = "INTEREST_RATE")
     BigDecimal interestRate;
 
-    @Column(name = "TermMonths")
+    @Column(name = "TERM_MONTH")
     int termMonths;
 
-    @Column(name = "MaturityDate")
+    @Column(name = "MATURITY_DATE")
     LocalDate maturityDate;
 }

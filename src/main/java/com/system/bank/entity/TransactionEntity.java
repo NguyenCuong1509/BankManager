@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "TRANSACTION")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,36 +20,35 @@ public class TransactionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_seq")
     @SequenceGenerator(name = "transaction_seq", sequenceName = "TRANSACTION_SEQ", allocationSize = 1)
-    @Column(name = "TransactionId")
+    @Column(name = "TRANSACTION_ID")
     Long transactionId;
 
-    @Column(name = "RefNo", unique = true)
+    @Column(name = "REFNO", unique = true)
     String refNo;
 
-    @Column(name = "FromAccount")
+    @Column(name = "FROM_ACCOUNT")
     String fromAccount;
 
-    @Column(name = "ToAccount")
+    @Column(name = "TO_ACCOUNT")
     String toAccount;
 
-    @Column(name = "Amount")
+    @Column(name = "AMOUNT")
     BigDecimal amount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Status")
+    @Column(name = "STATUS")
     TransactionStatus status;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "TranType")
-    TransactionType tranType;
+    @Column(name = "TRANS_TYPE")
+    TransactionType transType;
 
-    @Column(name = "CreateAt")
+    @Column(name = "CREATE_AT")
     LocalDateTime createAt = LocalDateTime.now();
 
-    @Column(name = "FailureReason")
+    @Column(name = "FAILURE_REASON")
     String failureReason;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "AccountId")
-    AccountEntity account;
+    @Column(name = "ACCOUNT_ID")
+    Long accountId;
 }

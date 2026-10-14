@@ -9,14 +9,14 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "roles")
+@Table(name = "ROLE")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
     @SequenceGenerator(name = "role_seq", sequenceName = "ROLE_SEQ", allocationSize = 1)
-    @Column(name = "RoleId")
+    @Column(name = "ROLE_ID")
     private long roleId;
 
-    @Column(name = "NameRole")
+    @Column(name = "NAME_ROLE")
     private String nameRole;
 }

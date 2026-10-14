@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "customer")
+@Table(name = "CUSTOMER")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -19,27 +19,27 @@ public class CustomerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_seq")
     @SequenceGenerator(name = "customer_seq", sequenceName = "CUSTOMER_SEQ",allocationSize = 1)
-    @Column(name = "CustomerId")
+    @Column(name = "CUSTOMER_ID")
     Long customerId;
 
-    @Column(name = "FullName")
+    @Column(name = "FULL_NAME")
     String fullName;
 
-    @Column(name = "PhoneNumber")
+    @Column(name = "PHONE_NUMBER")
     String phoneNumber;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "CustomerStatus")
+    @Column(name = "CUSTOMER_STATUS")
     AccountCustomerStatus customerStatus;
 
-    @Column(name = "DateOfBirth")
+    @Column(name = "DATE_OF_BIRTH")
     LocalDate dateOfBirth;
 
-    @Column(name = "Address")
+    @Column(name = "ADDRESS")
     String address;
 
-    @OneToMany(mappedBy = "customer")
-    List<AccountEntity> account;
+    @Column(name = "ACCOUNT_ID")
+    Long accountId;
 
 
 }
