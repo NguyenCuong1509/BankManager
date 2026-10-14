@@ -34,27 +34,16 @@ public class CustomerMapper {
         return customerEntity;
     }
 
-    // Entity to Response DTO (kèm danh sách tài khoản nếu có)
     public CustomerReponseDTO toResponseDto(CustomerEntity entity) {
         if (entity == null) return null;
+
         CustomerReponseDTO response = new CustomerReponseDTO();
         response.setCustomerId(entity.getCustomerId());
         response.setFullName(entity.getFullName());
         response.setPhoneNumber(entity.getPhoneNumber());
         response.setCustomerStatus(entity.getCustomerStatus());
-        if (entity.getDateOfBirth() != null) {
-            response.setDateOfBirth(entity.getDateOfBirth());
-        }
+        response.setDateOfBirth(entity.getDateOfBirth());
         response.setAddress(entity.getAddress());
-
-        if (entity.getAccount() != null) {
-            List<AccountReponseDTO> accountDTOs = entity.getAccount().stream()
-                    .map(accountMapper::toResponseDto)
-                    .collect(Collectors.toList());
-            response.setAccounts(accountDTOs);
-        } else {
-            response.setAccounts(Collections.emptyList());
-        }
 
         return response;
     }

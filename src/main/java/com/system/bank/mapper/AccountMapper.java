@@ -13,8 +13,9 @@ import java.time.LocalDateTime;
 @Component
 public class AccountMapper {
 
-    public AccountEntity toEntity(AccountRequestDTO requestDTO, CustomerEntity customer) {
+    public AccountEntity toEntity(AccountRequestDTO requestDTO, Long customerId) {
         if (requestDTO == null) return null;
+
         AccountEntity accountEntity = new AccountEntity();
         accountEntity.setAccountNumber(requestDTO.getAccountNumber());
         accountEntity.setAccountType(requestDTO.getAccountType());
@@ -22,7 +23,8 @@ public class AccountMapper {
         accountEntity.setBalance(BigDecimal.ZERO);
         accountEntity.setAccountStatus(AccountCustomerStatus.ACTIVE);
         accountEntity.setCreateAt(LocalDateTime.now());
-        accountEntity.setCustomer(customer);
+        accountEntity.setCustomerId(customerId);
+
         return accountEntity;
     }
 
@@ -36,9 +38,7 @@ public class AccountMapper {
         dto.setAccountType(entity.getAccountType());
         dto.setCreateAt(entity.getCreateAt());
         dto.setDailyLimit(entity.getDailyLimit());
-        if (entity.getCustomer() != null) {
-            dto.setCustomerId(entity.getCustomer().getCustomerId());
-        }
+        dto.setCustomerId(entity.getCustomerId());
         return dto;
     }
 }

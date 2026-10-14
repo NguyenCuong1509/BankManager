@@ -40,32 +40,39 @@ public class AuthService {
         UserEntity entity = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
-        boolean matchs = passwordEncoder.matches(
+        boolean matches = passwordEncoder.matches(
                 request.getPassword(),
                 entity.getPassword()
         );
 
-        if (!matchs) {
+        if (!matches) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        if (entity.getCustomer() != null
-                && entity.getCustomer().getCustomerStatus() == AccountCustomerStatus.LOCKED) {
-            throw new AppException(ErrorCode.USER_LOCKED);
+        Long customerId = entity.getCustomerId();
+        String fullName = entity.getUsername();
+        String roleName;
+
+        if (customerId != null) {
+            CustomerEntity customer = customerRepository.findById(customerId)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
+            if (customer.getCustomerStatus() == AccountCustomerStatus.LOCKED) {
+                throw new AppException(ErrorCode.USER_LOCKED);
+            }
+
+            fullName = customer.getFullName();
         }
 
-        Long customerId = entity.getCustomer() != null
-                ? entity.getCustomer().getCustomerId()
-                : null;
+        RoleEntity role = roleRepository.findById(entity.getRoleId())
+                .orElseThrow(() -> new RuntimeException(new AppException(ErrorCode.ROLE_NOT_FOUND)));
 
-        String fullName = entity.getCustomer() != null
-                ? entity.getCustomer().getFullName()
-                : entity.getUsername();
+        roleName = role.getNameRole();
 
         return LoginResponseDTO.builder()
                 .userId(entity.getUserId())
                 .username(entity.getUsername())
-                .role(entity.getRole().getNameRole())
+                .role(roleName)
                 .customerId(customerId)
                 .fullName(fullName)
                 .authenticated(true)
@@ -92,8 +99,8 @@ public class AuthService {
         UserEntity user = UserEntity.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .customer(savedCustomer)
-                .role(role)
+                .customerId(savedCustomer.getCustomerId())
+                .roleId(role.getRoleId())
                 .build();
         UserEntity savedUser = userRepository.save(user);
 
@@ -102,7 +109,7 @@ public class AuthService {
                 .username(savedUser.getUsername())
                 .customerId(savedCustomer.getCustomerId())
                 .fullName(savedCustomer.getFullName())
-                .role(savedUser.getRole().getNameRole())
+                .role(role.getNameRole())
                 .authenticated(true)
                 .message("Đăng ký tài khoản thành công.")
                 .build();

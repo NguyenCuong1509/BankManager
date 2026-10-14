@@ -107,9 +107,12 @@ public class CustomerService {
 
     @Transactional(rollbackFor = Exception.class)
     public AccountReponseDTO createAccount(AccountRequestDTO request) {
+
         CustomerEntity customer = customerRepository.findById(request.getCustomerId())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+
         AccountEntity entity;
+
         if (request.getAccountType() == AccountType.SAVING) {
             SavingAccountEntity saving = new SavingAccountEntity();
 
@@ -117,20 +120,28 @@ public class CustomerService {
             saving.setInterestRate(request.getInterestRate());
             saving.setTermMonths(request.getTermMonths());
             saving.setMaturityDate(request.getMaturityDate());
+
             entity = saving;
+
         } else if (request.getAccountType() == AccountType.PAYMENT) {
             PaymentAccountEntity payment = new PaymentAccountEntity();
+
             payment.setAccountType(AccountType.PAYMENT);
             payment.setDailyTransferred(request.getDailyTransferred());
             payment.setTransferCountToday(request.getTransferCountToday());
+
             entity = payment;
+
         } else {
             throw new AppException(ErrorCode.ACCOUNT_TYPE_INVALID);
         }
+
         entity.setAccountNumber(request.getAccountNumber());
         entity.setDailyLimit(request.getDailyLimit());
-        entity.setCustomer(customer);
+        entity.setCustomerId(customer.getCustomerId());
+
         AccountEntity saved = accountRepository.save(entity);
+
         return accountMapper.toResponseDto(saved);
     }
 

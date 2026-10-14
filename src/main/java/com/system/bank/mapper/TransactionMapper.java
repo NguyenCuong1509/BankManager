@@ -16,7 +16,7 @@ public class TransactionMapper {
                 .toAccount(entity.getToAccount())
                 .amount(entity.getAmount())
                 .status(entity.getStatus())
-                .tranType(entity.getTranType())
+                .tranType(entity.getTransType())
                 .createAt(entity.getCreateAt())
                 .failureReason(entity.getFailureReason())
                 .build();

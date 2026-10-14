@@ -16,6 +16,6 @@ public class LoginResponseDTO {
     private String fullName;
     private boolean authenticated;
     private String message;
-    private Long roleId;
+    private String role;
 }
 
