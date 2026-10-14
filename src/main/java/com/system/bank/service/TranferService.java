@@ -147,6 +147,7 @@ public class TranferService {
         account.setBalance(account.getBalance().subtract(request.getAmount()));
         accountRepository.save(account);
 
+
         String refNo = "WTH" + System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         TransactionEntity transaction = new TransactionEntity();
         transaction.setRefNo(refNo);
