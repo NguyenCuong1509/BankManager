@@ -72,7 +72,7 @@ public class DataInitializer {
             account1.setAccountNumber("1000000001");
             account1.setBalance(BigDecimal.ZERO);
             account1.setAccountType(AccountType.PAYMENT);
-            account1.setCustomer(customer);
+            account1.setCustomerId(customer.getCustomerId());
 
             accountRepository.save(account1);
         }
@@ -82,7 +82,7 @@ public class DataInitializer {
             account2.setAccountNumber("1000000002");
             account2.setBalance(new BigDecimal("50000000"));
             account2.setAccountType(AccountType.PAYMENT);
-            account2.setCustomer(customer);
+            account2.setCustomerId(customer.getCustomerId());
 
             accountRepository.save(account2);
         }
@@ -92,7 +92,7 @@ public class DataInitializer {
             account3.setAccountNumber("1000000003");
             account3.setBalance(new BigDecimal("100000000"));
             account3.setAccountType(AccountType.SAVING);
-            account3.setCustomer(customer);
+            account3.setCustomerId(customer.getCustomerId());
 
             accountRepository.save(account3);
         }
@@ -111,6 +111,7 @@ public class DataInitializer {
         roleRepository.save(entity);
         }
     }
+
     private void initUsers() {
 
         if (userRepository.findByUsername("ADMIN").isEmpty()) {
@@ -122,7 +123,7 @@ public class DataInitializer {
             UserEntity admin = UserEntity.builder()
                     .username("ADMIN")
                     .password(passwordEncoder.encode("123456"))
-                    .role(adminRole)
+                    .roleId(adminRole.getRoleId())
                     .build();
 
             userRepository.save(admin);
@@ -141,8 +142,8 @@ public class DataInitializer {
             UserEntity customer = UserEntity.builder()
                     .username("CUSTOMER")
                     .password(passwordEncoder.encode("123456789"))
-                    .role(customerRole)
-                    .customer(customerEntity)
+                    .roleId(customerRole.getRoleId())
+                    .customerId(customerEntity.getCustomerId())
                     .build();
 
             userRepository.save(customer);

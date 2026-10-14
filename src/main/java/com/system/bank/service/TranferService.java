@@ -82,9 +82,9 @@ public class TranferService {
         transaction.setToAccount(toAccount.getAccountNumber());
         transaction.setAmount(request.getAmount());
         transaction.setStatus(TransactionStatus.SUCCESS);
-        transaction.setTranType(TransactionType.TRANSFER);
+        transaction.setTransType(TransactionType.TRANSFER);
         transaction.setCreateAt(LocalDateTime.now());
-        transaction.setAccount(fromAccount);
+        transaction.setAccountId(fromAccount.getAccountId());
 
         TransactionEntity savedTxn = transactionRepository.save(transaction);
         log.info("Chuyển khoản thành công từ {} sang {} số tiền: {} (Mã GD: {})",
@@ -116,9 +116,9 @@ public class TranferService {
         transaction.setToAccount(account.getAccountNumber());
         transaction.setAmount(request.getAmount());
         transaction.setStatus(TransactionStatus.SUCCESS);
-        transaction.setTranType(TransactionType.DEPOSIT);
+        transaction.setTransType(TransactionType.DEPOSIT);
         transaction.setCreateAt(LocalDateTime.now());
-        transaction.setAccount(account);
+        transaction.setAccountId(account.getAccountId());
 
         TransactionEntity savedTxn = transactionRepository.save(transaction);
         log.info("Nạp tiền thành công vào tài khoản {} số tiền: {} (Mã GD: {})",
@@ -155,9 +155,9 @@ public class TranferService {
         transaction.setToAccount("CASH_WITHDRAW");
         transaction.setAmount(request.getAmount());
         transaction.setStatus(TransactionStatus.SUCCESS);
-        transaction.setTranType(TransactionType.WITHDRAW);
+        transaction.setTransType(TransactionType.WITHDRAW);
         transaction.setCreateAt(LocalDateTime.now());
-        transaction.setAccount(account);
+        transaction.setAccountId(account.getAccountId());
 
         TransactionEntity savedTxn = transactionRepository.save(transaction);
         log.info("Rút tiền thành công từ tài khoản {} số tiền: {} (Mã GD: {})",
