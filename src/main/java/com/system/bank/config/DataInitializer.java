@@ -10,8 +10,6 @@ import com.system.bank.repository.AccountRepository;
 import com.system.bank.repository.CustomerRepository;
 import com.system.bank.repository.RoleRepository;
 import com.system.bank.repository.UserRepository;
-import com.system.bank.service.CustomerService;
-import org.apache.catalina.User;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

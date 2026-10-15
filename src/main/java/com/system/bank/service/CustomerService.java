@@ -16,13 +16,10 @@ import com.system.bank.mapper.AccountMapper;
 import com.system.bank.mapper.CustomerMapper;
 import com.system.bank.repository.AccountRepository;
 import com.system.bank.repository.CustomerRepository;
-import jakarta.persistence.LockModeType;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

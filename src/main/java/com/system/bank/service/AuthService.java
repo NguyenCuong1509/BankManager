@@ -3,7 +3,6 @@ package com.system.bank.service;
 import com.system.bank.dto.LoginRequestDTO;
 import com.system.bank.dto.LoginResponseDTO;
 import com.system.bank.dto.RegisterRequestDTO;
-import com.system.bank.dto.RoleResponse;
 import com.system.bank.entity.CustomerEntity;
 import com.system.bank.entity.RoleEntity;
 import com.system.bank.entity.UserEntity;

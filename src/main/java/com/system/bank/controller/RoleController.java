@@ -3,7 +3,6 @@ package com.system.bank.controller;
 import com.system.bank.dto.ApiReponse;
 import com.system.bank.dto.RoleRequest;
 import com.system.bank.dto.RoleResponse;
-import com.system.bank.entity.RoleEntity;
 import com.system.bank.service.RoleService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

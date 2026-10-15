@@ -13,13 +13,11 @@ import com.system.bank.exception.AppException;
 import com.system.bank.exception.ErrorCode;
 import com.system.bank.mapper.TransactionMapper;
 import com.system.bank.repository.AccountRepository;
-import com.system.bank.repository.CustomerRepository;
 import com.system.bank.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.sound.midi.MidiFileFormat;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;

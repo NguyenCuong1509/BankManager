@@ -4,9 +4,7 @@ import com.system.bank.enums.AccountCustomerStatus;
 import com.system.bank.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

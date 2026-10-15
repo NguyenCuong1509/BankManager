@@ -3,7 +3,6 @@ package com.system.bank.mapper;
 import com.system.bank.dto.AccountReponseDTO;
 import com.system.bank.dto.AccountRequestDTO;
 import com.system.bank.entity.AccountEntity;
-import com.system.bank.entity.CustomerEntity;
 import com.system.bank.enums.AccountCustomerStatus;
 import org.springframework.stereotype.Component;
 

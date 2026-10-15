@@ -1,15 +1,10 @@
 package com.system.bank.mapper;
 
-import com.system.bank.dto.AccountReponseDTO;
 import com.system.bank.dto.CustomerReponseDTO;
 import com.system.bank.dto.CustomerRequestDTO;
 import com.system.bank.entity.CustomerEntity;
 import com.system.bank.enums.AccountCustomerStatus;
 import org.springframework.stereotype.Component;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class CustomerMapper {

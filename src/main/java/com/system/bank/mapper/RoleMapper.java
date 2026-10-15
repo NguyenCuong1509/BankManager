@@ -1,6 +1,5 @@
 package com.system.bank.mapper;
 
-import com.system.bank.dto.RoleRequest;
 import com.system.bank.dto.RoleResponse;
 import com.system.bank.entity.RoleEntity;
 import org.springframework.stereotype.Component;

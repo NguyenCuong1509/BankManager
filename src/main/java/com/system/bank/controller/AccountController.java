@@ -6,7 +6,6 @@ import com.system.bank.dto.ApiReponse;
 import com.system.bank.enums.AccountCustomerStatus;
 import com.system.bank.service.CustomerService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -28,7 +27,7 @@ public class AccountController {
                 .build());
     }
 
-    @PostMapping("/{accountId}/status")
+    @PatchMapping("/{accountId}/status")
     public ResponseEntity<ApiReponse<AccountReponseDTO>> updateAccountStatus(@PathVariable Long accountId,
                                                                              @RequestParam AccountCustomerStatus status) {
         AccountReponseDTO account = customerService.updateAccountStatus(accountId, status);
