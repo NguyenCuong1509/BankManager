@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "ACCOUNT")
+@Table(name = "ACCOUNT_ENTITY")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter

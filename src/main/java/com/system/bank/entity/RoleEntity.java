@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@Table(name = "ROLE")
+@Table(name = "ROLE_ENTITY")
 public class RoleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")

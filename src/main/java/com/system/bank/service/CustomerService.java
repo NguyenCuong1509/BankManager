@@ -42,8 +42,17 @@ public class CustomerService {
 
     @Transactional(readOnly = true)
     public List<CustomerReponseDTO> findAllCustomer() {
-        return customerRepository.findAllWithAccount().stream()
-                .map(customerMapper::toResponseDto)
+        return customerRepository.findAll().stream()
+                .map(customer -> {
+                    CustomerReponseDTO dto = customerMapper.toResponseDto(customer);
+                    List<AccountReponseDTO> accounts = accountRepository
+                            .findByCustomerId(customer.getCustomerId())
+                            .stream()
+                            .map(accountMapper::toResponseDto)
+                            .collect(Collectors.toList());
+                    dto.setAccounts(accounts);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -73,8 +82,17 @@ public class CustomerService {
 
     @Transactional(readOnly = true)
     public List<CustomerReponseDTO> getAll() {
-        return customerRepository.findAllWithAccount().stream()
-                .map(customerMapper::toResponseDto)
+        return customerRepository.findAll().stream()
+                .map(customer -> {
+                    CustomerReponseDTO dto = customerMapper.toResponseDto(customer);
+                    List<AccountReponseDTO> accounts = accountRepository
+                            .findByCustomerId(customer.getCustomerId())
+                            .stream()
+                            .map(accountMapper::toResponseDto)
+                            .collect(Collectors.toList());
+                    dto.setAccounts(accounts);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
@@ -100,7 +118,7 @@ public class CustomerService {
             throw new AppException(ErrorCode.ACCOUNT_NOT_FOUND);
         }
 
-        return accountRepository.findByCustomer_CustomerId(customerId).stream()
+        return accountRepository.findByCustomerId(customerId).stream()
                 .map(accountMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
