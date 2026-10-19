@@ -18,3 +18,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        query:
+          mutation_strategy:
+            global_temporary:
+              create_tables: false
+              drop_tables: false

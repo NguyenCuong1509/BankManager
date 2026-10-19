@@ -30,12 +30,14 @@ public class TranferService {
     private final AccountRepository accountRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
+    private final AuditService auditService;
 
     public TranferService(AccountRepository accountRepository, TransactionRepository transactionRepository,
-            TransactionMapper transactionMapper) {
+                          TransactionMapper transactionMapper, AuditService auditService) {
         this.accountRepository = accountRepository;
         this.transactionRepository = transactionRepository;
         this.transactionMapper = transactionMapper;
+        this.auditService = auditService;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -88,7 +90,18 @@ public class TranferService {
         log.info("Chuyển khoản thành công từ {} sang {} số tiền: {} (Mã GD: {})",
                 request.getFormAccount(), request.getToAccount(), request.getAmount(), refNo);
 
+        auditService.createAudit(
+                String.valueOf(fromAccount.getCustomerId()),
+                "TRANSFER",
+                "ACCOUNT",
+                String.valueOf(fromAccount.getAccountId()),
+                "balance=" + fromAccount.getBalance().add(request.getAmount()),
+                "balance=" + fromAccount.getBalance() + ", amount="
+                        + request.getAmount() + ", refNo=" + refNo,
+                "SUCCESS"
+        );
         return transactionMapper.toResponseDto(savedTxn);
+
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -122,6 +135,16 @@ public class TranferService {
         log.info("Nạp tiền thành công vào tài khoản {} số tiền: {} (Mã GD: {})",
                 request.getAccountNumber(), request.getAmount(), refNo);
 
+        auditService.createAudit(
+                String.valueOf(account.getCustomerId()),
+                "DEPOSIT",
+                "ACCOUNT",
+                String.valueOf(account.getAccountId()),
+                null,
+                "amount=" + request.getAmount() + ", refNo=" + refNo,
+                "SUCCESS"
+        );
+
         return transactionMapper.toResponseDto(savedTxn);
     }
 
@@ -145,7 +168,6 @@ public class TranferService {
         account.setBalance(account.getBalance().subtract(request.getAmount()));
         accountRepository.save(account);
 
-
         String refNo = "WTH" + System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         TransactionEntity transaction = new TransactionEntity();
         transaction.setRefNo(refNo);
@@ -160,7 +182,15 @@ public class TranferService {
         TransactionEntity savedTxn = transactionRepository.save(transaction);
         log.info("Rút tiền thành công từ tài khoản {} số tiền: {} (Mã GD: {})",
                 request.getAccountNumber(), request.getAmount(), refNo);
-
+        auditService.createAudit(
+                String.valueOf(account.getCustomerId()),
+                "WITHDRAW",
+                "ACCOUNT",
+                String.valueOf(account.getAccountId()),
+                null,
+                "amount=" + request.getAmount() + ", refNo=" + refNo,
+                "SUCCESS"
+        );
         return transactionMapper.toResponseDto(savedTxn);
     }
 
