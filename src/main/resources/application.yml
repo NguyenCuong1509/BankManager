@@ -23,3 +23,6 @@ spring:
             global_temporary:
               create_tables: false
               drop_tables: false
+
+  jwt:
+    secret-key: "tfghjt54q3uigyfyfyHGgjjyGGAtUYK7iyg0w6"

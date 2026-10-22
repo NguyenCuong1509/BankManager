@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 @Entity
 @Table(name = "AUDIT_LOG")
@@ -41,7 +41,7 @@ public class AuditEntity {
     private String status;
 
     @Column(name = "CREATED_AT")
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @Column(name = "CHECK_SUM")
     private String checkSum;

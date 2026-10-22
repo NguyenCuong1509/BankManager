@@ -11,6 +11,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HexFormat;
 import java.util.LinkedHashMap;
@@ -47,7 +48,7 @@ public class AuditService {
         audit.setOldValue(oldValue);
         audit.setNewValue(newValue);
         audit.setStatus(status);
-        audit.setCreatedAt(LocalDateTime.now());
+        audit.setCreatedAt(Instant.now());
         try {
             Map<String, Object> data = new LinkedHashMap<>();
             data.put("userId", userId);
