@@ -26,4 +26,13 @@ public class JwtService {
                 .compact();
     }
 
+    public String extractToken(String token){
+        return Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
+    }
+
 }
