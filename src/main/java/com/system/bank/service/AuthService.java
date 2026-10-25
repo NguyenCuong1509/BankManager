@@ -23,15 +23,17 @@ public class AuthService {
     private final CustomerRepository customerRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
+    private final JwtService jwtService;
 
     public AuthService(UserRepository userRepository,
                        CustomerRepository customerRepository,
                        PasswordEncoder passwordEncoder,
-                       RoleRepository roleRepository) {
+                       RoleRepository roleRepository, JwtService jwtService) {
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.jwtService = jwtService;
     }
     @Transactional(readOnly = true)
     public LoginResponseDTO login(LoginRequestDTO request) {
@@ -67,11 +69,13 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException(new AppException(ErrorCode.ROLE_NOT_FOUND)));
 
         roleName = role.getNameRole();
+        String token = jwtService.genToken(entity.getUsername());
 
         return LoginResponseDTO.builder()
                 .userId(entity.getUserId())
                 .username(entity.getUsername())
                 .role(roleName)
+                .token(token)
                 .customerId(customerId)
                 .fullName(fullName)
                 .authenticated(true)
@@ -103,12 +107,15 @@ public class AuthService {
                 .build();
         UserEntity savedUser = userRepository.save(user);
 
+        String token = jwtService.genToken(savedUser.getUsername());
+
         return LoginResponseDTO.builder()
                 .userId(savedUser.getUserId())
                 .username(savedUser.getUsername())
                 .customerId(savedCustomer.getCustomerId())
                 .fullName(savedCustomer.getFullName())
                 .role(role.getNameRole())
+                .token(token)
                 .authenticated(true)
                 .message("Đăng ký tài khoản thành công.")
                 .build();
