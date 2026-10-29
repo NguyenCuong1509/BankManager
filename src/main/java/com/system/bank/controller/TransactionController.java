@@ -18,6 +18,16 @@ public class TransactionController {
         this.tranferService = tranferService;
     }
 
+    @GetMapping
+    public ResponseEntity<ApiReponse<List<TransactionResponseDTO>>> getAllTransactions() {
+        List<TransactionResponseDTO> list = tranferService.getAllTransactions();
+        return ResponseEntity.ok(ApiReponse.<List<TransactionResponseDTO>>builder()
+                .code(1000)
+                .message("Lấy danh sách tất cả giao dịch thành công.")
+                .result(list)
+                .build());
+    }
+
     @PostMapping("/transfer")
     public ResponseEntity<ApiReponse<TransactionResponseDTO>> transfer(@RequestBody @Valid TransferRequestDTO request) {
         TransactionResponseDTO response = tranferService.transfer(request);

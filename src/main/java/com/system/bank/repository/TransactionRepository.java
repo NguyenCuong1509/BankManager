@@ -15,4 +15,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     @Query("SELECT t FROM TransactionEntity t WHERE t.fromAccount = :accountNumber OR t.toAccount = :accountNumber ORDER BY t.createAt DESC")
     List<TransactionEntity> findHistoryByAccountNumber(@Param("accountNumber") String accountNumber);
+
+    List<TransactionEntity> findAllByOrderByCreateAtDesc();
 }

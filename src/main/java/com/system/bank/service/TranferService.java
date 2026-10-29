@@ -73,7 +73,7 @@ public class TranferService {
         toAccount.setBalance(toAccount.getBalance().add(request.getAmount()));
 
         accountRepository.save(fromAccount);
-        accountRepository.save((toAccount));
+        accountRepository.save(toAccount);
 
         String refNo = "TXN" + System.currentTimeMillis() + UUID.randomUUID().toString().substring(0, 6).toUpperCase();
         TransactionEntity transaction = new TransactionEntity();
@@ -101,7 +101,6 @@ public class TranferService {
                 "SUCCESS"
         );
         return transactionMapper.toResponseDto(savedTxn);
-
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -205,10 +204,16 @@ public class TranferService {
     }
 
     @Transactional(readOnly = true)
+    public List<TransactionResponseDTO> getAllTransactions() {
+        return transactionRepository.findAllByOrderByCreateAtDesc().stream()
+                .map(transactionMapper::toResponseDto)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public TransactionResponseDTO getbyRefNo(String refNo) {
         TransactionEntity entity = transactionRepository.findByRefNo(refNo)
                 .orElseThrow(() -> new AppException(ErrorCode.TRANSACTION_NOT_FOUND));
         return transactionMapper.toResponseDto(entity);
-
     }
 }

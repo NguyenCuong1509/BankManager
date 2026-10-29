@@ -1,12 +1,13 @@
 package com.system.bank.controller;
 
-
 import com.system.bank.dto.AccountReponseDTO;
 import com.system.bank.dto.ApiReponse;
 import com.system.bank.enums.AccountCustomerStatus;
 import com.system.bank.service.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -17,9 +18,29 @@ public class AccountController {
         this.customerService = customerService;
     }
 
+    @GetMapping
+    public ResponseEntity<ApiReponse<List<AccountReponseDTO>>> getAllAccounts() {
+        List<AccountReponseDTO> accounts = customerService.getAllAccounts();
+        return ResponseEntity.ok(ApiReponse.<List<AccountReponseDTO>>builder()
+                .code(1000)
+                .message("Lấy danh sách tất cả tài khoản thành công.")
+                .result(accounts)
+                .build());
+    }
+
     @GetMapping("/{accountId}")
     public ResponseEntity<ApiReponse<AccountReponseDTO>> getAccountById(@PathVariable Long accountId) {
         AccountReponseDTO account = customerService.findByAccountId(accountId);
+        return ResponseEntity.ok(ApiReponse.<AccountReponseDTO>builder()
+                .code(1000)
+                .message("Lấy thông tin tài khoản thành công.")
+                .result(account)
+                .build());
+    }
+
+    @GetMapping("/number/{accountNumber}")
+    public ResponseEntity<ApiReponse<AccountReponseDTO>> getAccountByNumber(@PathVariable String accountNumber) {
+        AccountReponseDTO account = customerService.findByAccountNumber(accountNumber);
         return ResponseEntity.ok(ApiReponse.<AccountReponseDTO>builder()
                 .code(1000)
                 .message("Lấy thông tin tài khoản thành công.")

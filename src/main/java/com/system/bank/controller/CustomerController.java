@@ -5,6 +5,7 @@ import com.system.bank.dto.AccountRequestDTO;
 import com.system.bank.dto.ApiReponse;
 import com.system.bank.dto.CustomerReponseDTO;
 import com.system.bank.dto.CustomerRequestDTO;
+import com.system.bank.enums.AccountCustomerStatus;
 import com.system.bank.service.CustomerService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,18 @@ public class CustomerController {
                 .code(1000)
                 .message("Khóa tài khoản khách hàng thành công.")
                 .result("Khách hàng đã được chuyển sang trạng thái LOCKED")
+                .build());
+    }
+
+    @PatchMapping("/{customerId}/status")
+    public ResponseEntity<ApiReponse<CustomerReponseDTO>> updateCustomerStatus(
+            @PathVariable Long customerId,
+            @RequestParam AccountCustomerStatus status) {
+        CustomerReponseDTO updated = customerService.updateStatus(customerId, status);
+        return ResponseEntity.ok(ApiReponse.<CustomerReponseDTO>builder()
+                .code(1000)
+                .message("Cập nhật trạng thái khách hàng thành công.")
+                .result(updated)
                 .build());
     }
 

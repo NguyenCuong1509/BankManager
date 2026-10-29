@@ -1,5 +1,6 @@
 package com.system.bank.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class TransferRequestDTO {
     @NotBlank(message = "Số tài khoản chuyển không được để trống")
+    @JsonAlias({"fromAccount", "formAccount"})
     private String formAccount;
 
     @NotBlank(message = "Số tài khoản nhận không được để trống")
@@ -22,4 +24,12 @@ public class TransferRequestDTO {
     @NotNull(message = "Số tiền chuyển không được để trống")
     @DecimalMin(value = "1000", message = "Số tiền chuyển tối thiểu là 1,000 VND")
     private BigDecimal amount;
+
+    public String getFromAccount() {
+        return formAccount;
+    }
+
+    public void setFromAccount(String fromAccount) {
+        this.formAccount = fromAccount;
+    }
 }
