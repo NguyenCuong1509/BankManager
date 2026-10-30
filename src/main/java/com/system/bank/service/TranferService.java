@@ -42,7 +42,7 @@ public class TranferService {
 
     @Transactional(rollbackFor = Exception.class)
     public TransactionResponseDTO transfer(TransferRequestDTO request) {
-        if (request.getFormAccount().equalsIgnoreCase(request.getToAccount())) {
+        if (request.getFromAccount().equalsIgnoreCase(request.getToAccount())) {
             throw new AppException(ErrorCode.SAME_ACCOUNT_TRANSFER);
         }
 
@@ -50,7 +50,7 @@ public class TranferService {
             throw new AppException(ErrorCode.RESULT_INVALID);
         }
 
-        AccountEntity fromAccount = accountRepository.findByAccountNumber(request.getFormAccount())
+        AccountEntity fromAccount = accountRepository.findByAccountNumber(request.getFromAccount())
                 .orElseThrow(() -> new AppException(ErrorCode.ACCOUNT_NOT_FOUND));
 
         AccountEntity toAccount = accountRepository.findByAccountNumber(request.getToAccount())
@@ -88,7 +88,7 @@ public class TranferService {
 
         TransactionEntity savedTxn = transactionRepository.save(transaction);
         log.info("Chuyển khoản thành công từ {} sang {} số tiền: {} (Mã GD: {})",
-                request.getFormAccount(), request.getToAccount(), request.getAmount(), refNo);
+                request.getFromAccount(), request.getToAccount(), request.getAmount(), refNo);
 
         auditService.createAudit(
                 String.valueOf(fromAccount.getCustomerId()),
